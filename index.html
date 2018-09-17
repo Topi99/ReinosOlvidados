@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Canvas Experiment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+  </style>
+</head>
+
+<body>
+  <canvas id="c" height="500" width="500" style="border: 1px solid black">
+
+  </canvas>
+
+  <script src="Circle.js"></script>
+  <script>
+    window.addEventListener('keydown', this.checkKey);
+    const c = document.getElementById("c");
+    const ctx = c.getContext("2d");
+
+    let x = 0;
+    let y = 0;
+    let flag = false;
+
+    const cir = new Circle(0, 0, ctx);
+
+
+    function checkKey(e) {
+      let code = e.keyCode;
+      switch (code) {
+        case 37: cir.lessX(); break; //Left key
+        case 38: cir.lessY(); break; //Up key
+        case 39: cir.moreX(); break; //Right key
+        case 40: cir.moreY(); break; //Down key
+        default: console.log(code); //Everything else
+      }
+    }
+
+    setInterval(() => {
+      ctx.clearRect(0, 0, 485, 485);
+      cir.dibujar();
+    }, 30);
+
+  </script>
+</body>
+
+</html>
