@@ -6,12 +6,19 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Canvas Experiment</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    #canvas {
+      background-image: url("bg.jpeg");
+    }
+  </style>
 </head>
 
 <body>
   <canvas id="c" height="500" width="500" style="border: 1px solid black">
 
   </canvas>
+  <img src="bg.jpeg" id="bg" />
+  <img src="tiny_r.png" id="tiny_r" />
 
   <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
   <script src="firebase.js"></script>
@@ -23,13 +30,14 @@
     const database = firebase.database();
     const cirRef = database.ref('circles/');
     let myCir, otherCir;
-    let mine = 0;
+    let mine = 1;
+    const tiny_r = document.getElementById("tiny_r");
 
     let redRef = cirRef.child("red/");
     let blueRef = cirRef.child("blue/");
 
-    const redCir = new Circle(0, 0, ctx, redRef, "#ff0000");
-    const blueCir = new Circle(500, 500, ctx, blueRef, "#0000ff");
+    const redCir = new Circle(0, 0, ctx, redRef, tiny_r);
+    const blueCir = new Circle(500 - 16, 500 - 16, ctx, blueRef, tiny_r);
 
     function checkKey(e) {
       let code = e.keyCode;
@@ -63,8 +71,13 @@
         myCir = blueCir;
       }
 
+      const bg = document.getElementById("bg");
+      bg.style.display = "none";
+      tiny_r.style.display = "none";
+
+
       setInterval(() => {
-        ctx.clearRect(0, 0, 500, 500);
+        ctx.drawImage(bg, 0, 0, 500, 500);
         updateFromFB('red/');
         updateFromFB('blue/');
         myCir.dibujar();

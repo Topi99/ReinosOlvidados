@@ -1,9 +1,9 @@
 class Circle {
-  constructor(x, y, ctx, ref, color) {
+  constructor(x, y, ctx, ref, img) {
     this.x = x;
     this.y = y;
     this.ctx = ctx;
-    this.color = color;
+    this.img = img;
 
     this.ref = ref;
 
@@ -11,11 +11,12 @@ class Circle {
   }
 
   dibujar() {
-    ctx.beginPath();
-    ctx.arc(this.getX(), this.getY(), 15, 0, 2 * Math.PI);
+    /*ctx.beginPath();
+    ctx.arc(this.getX(), this.getY(), 10, 0, 2 * Math.PI);
     ctx.fillStyle = this.color;
     ctx.stroke();
-    ctx.fill();
+    ctx.fill();*/
+    ctx.drawImage(this.img, this.getX(), this.getY(), 20, 20);
   }
 
   updateInFB() {
