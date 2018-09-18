@@ -6,8 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Canvas Experiment</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-  </style>
 </head>
 
 <body>
@@ -15,34 +13,67 @@
 
   </canvas>
 
+  <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+  <script src="firebase.js"></script>
   <script src="Circle.js"></script>
   <script>
     window.addEventListener('keydown', this.checkKey);
     const c = document.getElementById("c");
     const ctx = c.getContext("2d");
+    const database = firebase.database();
+    const cirRef = database.ref('circles/');
+    let myCir, otherCir;
+    let mine = 1;
 
-    let x = 0;
-    let y = 0;
-    let flag = false;
+    let redRef = cirRef.child("red/");
+    let blueRef = cirRef.child("blue/");
 
-    const cir = new Circle(0, 0, ctx);
-
+    const redCir = new Circle(0, 0, ctx, redRef, "#ff0000");
+    const blueCir = new Circle(60, 60, ctx, blueRef, "#0000ff");
 
     function checkKey(e) {
       let code = e.keyCode;
       switch (code) {
-        case 37: cir.lessX(); break; //Left key
-        case 38: cir.lessY(); break; //Up key
-        case 39: cir.moreX(); break; //Right key
-        case 40: cir.moreY(); break; //Down key
+        case 37: myCir.left(); break; //Left key
+        case 38: myCir.up(); break; //Up key
+        case 39: myCir.right(); break; //Right key
+        case 40: myCir.down(); break; //Down key
         default: console.log(code); //Everything else
       }
     }
 
-    setInterval(() => {
-      ctx.clearRect(0, 0, 485, 485);
-      cir.dibujar();
-    }, 30);
+    const updateFromFB = (ref) => {
+      cirRef.child(ref).on('value', data => {
+        if (ref == "red/") {
+          redCir.setX(data.val().x);
+          redCir.setY(data.val().y);
+        } else {
+          blueCir.setX(data.val().x);
+          blueCir.setY(data.val().y);
+        }
+      });
+    }
+
+    const main = () => {
+      if (mine) {
+        myCir = redCir;
+        otherCir = blueCir;
+      } else {
+        otherCir = redCir;
+        myCir = blueCir;
+      }
+
+      setInterval(() => {
+        ctx.clearRect(0, 0, 485, 485);
+        updateFromFB('red/');
+        updateFromFB('blue/');
+        myCir.dibujar();
+        otherCir.dibujar();
+      }, 30);
+    }
+
+    main();
+
 
   </script>
 </body>

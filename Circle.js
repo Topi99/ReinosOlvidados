@@ -1,32 +1,69 @@
 class Circle {
-  constructor(x, y, ctx) {
+  constructor(x, y, ctx, ref, color) {
     this.x = x;
     this.y = y;
     this.ctx = ctx;
+    this.color = color;
+
+    this.ref = ref;
+
+    this.updateInFB();
   }
 
-  dibujar () {
+  dibujar() {
     ctx.beginPath();
-    ctx.arc(this.x, this.y, 15, 0, 2 * Math.PI);
+    ctx.arc(this.getX(), this.getY(), 15, 0, 2 * Math.PI);
+    ctx.fillStyle = this.color;
     ctx.stroke();
-    ctx.fillStyle = "#ff0000";
     ctx.fill();
   }
 
-  moreX() {
-    this.x += 10;
+  updateInFB() {
+    this.ref.update({
+      'y': this.y,
+      'x': this.x
+    });
   }
 
-  lessX() {
+  getRef() {
+    return this.ref;
+  }
+
+  getX() {
+    return this.x;
+  }
+
+  getY() {
+    return this.y;
+  }
+
+  setX(x) {
+    this.x = x;
+  }
+
+  setY(y) {
+    this.y = y;
+  }
+
+  left() {
     this.x -= 10;
+    this.updateInFB();
   }
 
-  moreY() {
-    this.y += 10;
+  right() {
+    this.x += 10;
+    this.updateInFB();
   }
 
-  lessY() {
+  up() {
     this.y -= 10;
+    this.updateInFB();
   }
+
+  down() {
+    this.y += 10;
+    this.updateInFB();
+  }
+
 }
 
