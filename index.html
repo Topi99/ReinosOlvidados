@@ -23,7 +23,7 @@
     const database = firebase.database();
     const cirRef = database.ref('circles/');
     let myCir, otherCir;
-    let mine = 1;
+    let mine = 0;
 
     let redRef = cirRef.child("red/");
     let blueRef = cirRef.child("blue/");
@@ -64,7 +64,7 @@
       }
 
       setInterval(() => {
-        ctx.clearRect(0, 0, 485, 485);
+        ctx.clearRect(0, 0, 500, 500);
         updateFromFB('red/');
         updateFromFB('blue/');
         myCir.dibujar();
