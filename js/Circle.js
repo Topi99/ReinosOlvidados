@@ -11,19 +11,15 @@ class Circle {
   }
 
   dibujar() {
-    /*ctx.beginPath();
-    ctx.arc(this.getX(), this.getY(), 10, 0, 2 * Math.PI);
-    ctx.fillStyle = this.color;
-    ctx.stroke();
-    ctx.fill();*/
-    ctx.drawImage(this.img, this.getX(), this.getY(), 20, 20);
+    this.ctx.drawImage(this.img, this.getX(), this.getY(), 20, 20);
   }
 
   updateInFB() {
-    this.ref.update({
+    /*this.ref.update({
       'y': this.y,
       'x': this.x
-    });
+    });*/
+    console.log(this.ref);
   }
 
   getRef() {
@@ -53,7 +49,9 @@ class Circle {
 
   right() {
     this.x += 10;
+    console.log("right");
     this.updateInFB();
+    console.log("despues de this.updateInFB()");
   }
 
   up() {

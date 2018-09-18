@@ -4,91 +4,41 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Canvas Experiment</title>
+  <title>Prototipo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    #canvas {
-      background-image: url("bg.jpeg");
-    }
-  </style>
+  <link rel="stylesheet" href="css/main.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 
 <body>
-  <canvas id="c" height="500" width="500" style="border: 1px solid black">
+  <section>
+    <article id="login">
+      <h1>
+        Inicia Sesión Con Google.
+      </h1>
+      <button id="google">Inicia Sesión</button>
+    </article>
 
-  </canvas>
-  <img src="bg.jpeg" id="bg" />
-  <img src="tiny_r.png" id="tiny_r" />
+    <article id="matchmaking">
+      <h1>Selecciona tu contrincante.</h1>
+      <ul id="user-list">
+
+      </ul>
+    </article>
+
+    <article id="game">
+      <canvas id="c" height="500" width="500" style="border: 1px solid black">
+
+      </canvas>
+      <img src="img/bg.jpeg" id="bg" />
+      <img src="img/tiny_r.png" id="tiny_r" />
+    </article>
+  </section>
 
   <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
-  <script src="firebase.js"></script>
-  <script src="Circle.js"></script>
-  <script>
-    window.addEventListener('keydown', this.checkKey);
-    const c = document.getElementById("c");
-    const ctx = c.getContext("2d");
-    const database = firebase.database();
-    const cirRef = database.ref('circles/');
-    let myCir, otherCir;
-    let mine = 1;
-    const tiny_r = document.getElementById("tiny_r");
-
-    let redRef = cirRef.child("red/");
-    let blueRef = cirRef.child("blue/");
-
-    const redCir = new Circle(0, 0, ctx, redRef, tiny_r);
-    const blueCir = new Circle(500 - 16, 500 - 16, ctx, blueRef, tiny_r);
-
-    function checkKey(e) {
-      let code = e.keyCode;
-      switch (code) {
-        case 37: myCir.left(); break; //Left key
-        case 38: myCir.up(); break; //Up key
-        case 39: myCir.right(); break; //Right key
-        case 40: myCir.down(); break; //Down key
-        default: console.log(code); //Everything else
-      }
-    }
-
-    const updateFromFB = (ref) => {
-      cirRef.child(ref).on('value', data => {
-        if (ref == "red/") {
-          redCir.setX(data.val().x);
-          redCir.setY(data.val().y);
-        } else {
-          blueCir.setX(data.val().x);
-          blueCir.setY(data.val().y);
-        }
-      });
-    }
-
-    const main = () => {
-      if (mine) {
-        myCir = redCir;
-        otherCir = blueCir;
-      } else {
-        otherCir = redCir;
-        myCir = blueCir;
-      }
-
-      const bg = document.getElementById("bg");
-      bg.style.display = "none";
-      tiny_r.style.display = "none";
-
-
-      setInterval(() => {
-        ctx.drawImage(bg, 0, 0, 500, 500);
-        updateFromFB('red/');
-        updateFromFB('blue/');
-        myCir.dibujar();
-        otherCir.dibujar();
-      }, 30);
-    }
-
-    main();
-
-
-  </script>
+  <script src="js/firebase.js"></script>
+  <script src="js/Circle.js"></script>
+  <script src="js/main.js"></script>
 </body>
 
 </html>
